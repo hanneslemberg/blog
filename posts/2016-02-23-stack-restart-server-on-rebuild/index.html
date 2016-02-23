@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Linkliste - Restarting your server on rebuild</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Linkliste">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/blog/" />
+  <link rel="stylesheet" href="static/css/normalize.css">
+  <link rel="stylesheet" href="static/css/syntax.css">
+  <link rel="stylesheet" href="static/css/rrssb.css" />
+  <link rel="stylesheet" href="static/css/solo.css">
+  <script src="static/js/jquery.js"></script>
+</head>
+<body>
+  <article>
+   <div class="container">
+    <h1>Restarting your server on rebuild</h1>
+    <p>e.g. this Hakyll blog:</p>
+<p>Terminal 1:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">stack</span> build --file-watch --exec <span class="st">&quot;killall blog watch&quot;</span></code></pre></div>
+<p>Terminal 2:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">while</span> <span class="kw">true;</span> <span class="kw">do</span> <span class="kw">./watch.sh</span>; <span class="kw">sleep</span> 1<span class="kw">;</span> <span class="kw">done</span>;</code></pre></div>
+<p>Content of watch.sh</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">stack</span> exec blog rebuild
+<span class="kw">stack</span> exec blog watch</code></pre></div>
+
+    </div>
+  </article>
+</body>
+</html>
