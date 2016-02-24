@@ -13,8 +13,7 @@ postCtx =
 
 siteCtx :: Context String
 siteCtx =
-    constField "base_url" "/blog/" <>
-    --constField "base_url" "/" <>
+    constField "base_url" "/" <>
     constField "site_title" "Linkliste" <>
     functionField "image2" imageMacro <>
     defaultContext
