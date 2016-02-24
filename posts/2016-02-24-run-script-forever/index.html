@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Linkliste - Run script forever, without parallel execution</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Linkliste">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/" />
+  <link rel="stylesheet" href="static/css/normalize.css">
+  <link rel="stylesheet" href="static/css/syntax.css">
+  <link rel="stylesheet" href="static/css/rrssb.css" />
+  <link rel="stylesheet" href="static/css/solo.css">
+  <script src="static/js/jquery.js"></script>
+</head>
+<body>
+  <article>
+   <div class="container">
+    <h1>Run script forever, without parallel execution</h1>
+    <p>Execute a script every minute, but make sure it never runs two instances. This snippet only works for blocking tasks, but can easily adapted to e.g. restart a nonblocking development server.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+
+<span class="ot">PIDFILE=</span>path/to/pid-file
+
+<span class="kw">if [</span> <span class="ot">-e</span> <span class="ot">$PIDFILE</span><span class="kw"> ]</span>; <span class="kw">then</span>
+    <span class="ot">OLD_PID=$(</span><span class="kw">cat</span> <span class="ot">$PIDFILE)</span>
+    <span class="kw">if</span> <span class="kw">ps</span> -p <span class="st">&quot;</span><span class="ot">$OLD_PID</span><span class="st">&quot;</span> <span class="kw">&gt;</span> /dev/null
+    <span class="kw">then</span>
+        <span class="kw">exit</span> 0
+    <span class="kw">fi</span>
+<span class="kw">fi</span>
+
+<span class="co"># good to go, no processes running</span>
+<span class="kw">echo</span> <span class="ot">$$</span> <span class="kw">&gt;</span> <span class="ot">$PIDFILE</span>
+
+<span class="kw">rsync</span> <span class="ot">$FROM</span> <span class="ot">$TO</span></code></pre></div>
+
+    </div>
+  </article>
+</body>
+</html>
