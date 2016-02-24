@@ -3,6 +3,6 @@ layout: default
 title: Blog
 ---
 
-## Links
+## Links & code snippets
 
 ### Last 10 posts
