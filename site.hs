@@ -53,13 +53,7 @@ main = hakyll $ do
             >>= loadAndApplyTemplate "layouts/default.html" siteCtx
     match "layouts/*" $ compile templateCompiler
 
-    {-match "posts/*" $ do
-        route $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
-            >>= relativizeUrls
-
+{-
     create ["archive.html"] $ do
         route idRoute
         compile $ do
@@ -83,15 +77,8 @@ main = hakyll $ do
                     listField "posts" postCtx (return posts) `mappend`
                     constField "title" "Home"                `mappend`
                     siteCtx
-
             getResourceBody
                 >>= applyAsTemplate indexCtx
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
-
-    match "templates/*" $ compile templateCompiler
-
-
---------------------------------------------------------------------------------
-
 -}
