@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Links & Snippets - Bridge angular and legacy code</title>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Links & Snippets">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/" />
+  <link rel="stylesheet" href="static/css/normalize.css">
+  <link rel="stylesheet" href="static/css/syntax.css">
+  <link rel="stylesheet" href="static/css/rrssb.css" />
+  <link rel="stylesheet" href="static/css/solo.css">
+  <script src="static/js/jquery.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-52135151-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+</head>
+<body>
+  <article>
+   <div class="container">
+    <h1>Bridge angular and legacy code</h1>
+    <p>In directive/component</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">...
+<span class="kw">function</span> <span class="at">init</span>() <span class="op">{</span>
+  <span class="va">$scope</span>.<span class="at">$watchGroup</span>([<span class="st">&#39;vm.name&#39;</span><span class="op">,</span> <span class="st">&#39;vm.email&#39;</span><span class="op">,</span> <span class="st">&#39;vm.password&#39;</span>]<span class="op">,</span> <span class="kw">function</span>() <span class="op">{</span>
+      <span class="va">self</span>.<span class="at">valuesChanged</span>()<span class="op">;</span>
+      <span class="at">loadSchedule</span>(<span class="va">self</span>.<span class="at">vehicleId</span>)<span class="op">;</span>
+  <span class="op">}</span>)<span class="op">;</span>
+<span class="op">}</span>
+...</code></pre></div>
+<p>In Webpage:</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="at">$</span>(document).<span class="at">ready</span>(<span class="kw">function</span>() <span class="op">{</span>
+   <span class="kw">var</span> injector <span class="op">=</span> <span class="va">angular</span>.<span class="at">bootstrap</span>(<span class="st">&#39;#angularId&#39;</span><span class="op">,</span> [<span class="st">&#39;module&#39;</span>]<span class="op">,</span> <span class="op">{</span><span class="dt">strictDi</span><span class="op">:</span> <span class="kw">true</span><span class="op">}</span>)<span class="op">;</span>
+   <span class="kw">var</span> $timeout <span class="op">=</span> <span class="va">injector</span>.<span class="at">get</span>(<span class="st">&#39;$timeout&#39;</span>)<span class="op">;</span>
+   <span class="kw">var</span> model <span class="op">=</span> <span class="at">$</span>(<span class="st">&#39;div[directiveName]&gt;div&#39;</span>).<span class="at">scope</span>().<span class="at">vm</span><span class="op">;</span>
+
+   <span class="kw">var</span> ids <span class="op">=</span> <span class="st">&quot;#input_name, #input_email, #input_password&quot;</span><span class="op">;</span>
+   <span class="at">$</span>(ids).<span class="at">on</span>(<span class="st">&#39;keyup&#39;</span><span class="op">,</span> update)<span class="op">;</span>
+
+   <span class="at">update</span>()<span class="op">;</span>
+
+   <span class="kw">function</span> <span class="at">update</span>() <span class="op">{</span>
+       <span class="at">$timeout</span>(<span class="kw">function</span>() <span class="op">{</span>
+           <span class="va">model</span>.<span class="at">name</span> <span class="op">=</span> <span class="at">$</span>(<span class="st">&#39;#input_name&#39;</span>).<span class="at">val</span>()<span class="op">;</span>
+           <span class="va">model</span>.<span class="at">email</span> <span class="op">=</span> <span class="at">$</span>(<span class="st">&#39;#input_email&#39;</span>).<span class="at">val</span>()<span class="op">;</span>
+           <span class="va">model</span>.<span class="at">password</span> <span class="op">=</span> <span class="at">$</span>(<span class="st">&#39;#input_password&#39;</span>).<span class="at">val</span>()<span class="op">;</span>
+       <span class="op">}</span>)<span class="op">;</span>
+   <span class="op">}</span>
+<span class="op">}</span>)<span class="op">;</span></code></pre></div>
+
+    </div>
+  </article>
+</body>
+</html>
