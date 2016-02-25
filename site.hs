@@ -14,8 +14,7 @@ postCtx =
 siteCtx :: Context String
 siteCtx =
     constField "base_url" "/" <>
-    constField "site_title" "Linkliste" <>
-    functionField "image2" imageMacro <>
+    constField "site_title" "Links & Snippets" <>
     defaultContext
 -------------
 imageMacro :: [String] -> Item a -> Compiler String
