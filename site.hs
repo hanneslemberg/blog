@@ -51,6 +51,18 @@ main = hakyll $ do
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "layouts/page.html" siteCtx
             >>= loadAndApplyTemplate "layouts/default.html" siteCtx
+    create ["posts/index.html"] $ do
+        route idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll "content/posts/*.md"
+            let archiveCtx =
+                    listField "posts" postCtx (return posts) `mappend`
+                    constField "title" "Archive"            `mappend`
+                    siteCtx
+            makeItem ""
+                >>= loadAndApplyTemplate "layouts/archive.html" archiveCtx
+                >>= loadAndApplyTemplate "layouts/default.html" archiveCtx
+                >>= relativizeUrls
     match "layouts/*" $ compile templateCompiler
 
 {-
