@@ -4,17 +4,22 @@ import Data.Monoid (mappend, (<>))
 import Hakyll
 import System.FilePath.Posix  (takeBaseName,takeDirectory,(</>),splitFileName, joinPath, splitPath, replaceExtension)
 
-
 --------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" <>
     siteCtx
 
+draftCtx :: Context String
+draftCtx =
+    constField "robots" "noindex" <>
+    postCtx
+
 siteCtx :: Context String
 siteCtx =
     constField "base_url" "/" <>
     constField "site_title" "Links & Snippets" <>
+    constField "robots" "index, follow" <>
     defaultContext
 -------------
 imageMacro :: [String] -> Item a -> Compiler String
@@ -34,7 +39,6 @@ postRoute =  postRoute' . dropContentPart
 rootRoute :: Identifier -> FilePath
 rootRoute =  flip replaceExtension "html" . dropContentPart
 
-
 main :: IO ()
 main = hakyll $ do
     match "content/static/*/*" $ do
@@ -43,8 +47,13 @@ main = hakyll $ do
     match "content/posts/*.md" $ do
       route (customRoute postRoute)
       compile $ pandocCompiler
-          >>= loadAndApplyTemplate "layouts/page.html" siteCtx
-          >>= loadAndApplyTemplate "layouts/default.html" siteCtx
+          >>= loadAndApplyTemplate "layouts/page.html" postCtx
+          >>= loadAndApplyTemplate "layouts/default.html" postCtx
+    match "content/drafts/*.md" $ do
+      route (customRoute postRoute)
+      compile $ pandocCompiler
+          >>= loadAndApplyTemplate "layouts/page.html" draftCtx
+          >>= loadAndApplyTemplate "layouts/default.html" draftCtx
     match "content/*.md" $ do
         route (customRoute rootRoute)
         compile $ pandocCompiler
