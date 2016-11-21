@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Links & Snippets - Counting Watchers in Angular 1.x</title>
+  <meta charset="utf-8">
+  <meta name="robots" content="index, follow">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Links & Snippets">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/" />
+  <link rel="stylesheet" href="static/css/normalize.css">
+  <link rel="stylesheet" href="static/css/syntax.css">
+  <link rel="stylesheet" href="static/css/rrssb.css" />
+  <link rel="stylesheet" href="static/css/solo.css">
+  <script src="static/js/jquery.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-52135151-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+</head>
+<body>
+  <article>
+   <div class="container">
+    <h1>Counting Watchers in Angular 1.x</h1>
+    <p><a href="http://stackoverflow.com/questions/18499909/how-to-count-total-number-of-watches-on-a-page" class="uri">http://stackoverflow.com/questions/18499909/how-to-count-total-number-of-watches-on-a-page</a></p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">(<span class="kw">function</span> () <span class="op">{</span>
+    <span class="kw">var</span> root <span class="op">=</span> <span class="va">angular</span>.<span class="at">element</span>(<span class="va">document</span>.<span class="at">getElementsByTagName</span>(<span class="st">&#39;body&#39;</span>))<span class="op">;</span>
+
+    <span class="kw">var</span> watchers <span class="op">=</span> []<span class="op">;</span>
+
+    <span class="kw">var</span> f <span class="op">=</span> <span class="kw">function</span> (element) <span class="op">{</span>
+        <span class="va">angular</span>.<span class="at">forEach</span>([<span class="st">&#39;$scope&#39;</span><span class="op">,</span> <span class="st">&#39;$isolateScope&#39;</span>]<span class="op">,</span> <span class="kw">function</span> (scopeProperty) <span class="op">{</span>
+            <span class="cf">if</span> (<span class="va">element</span>.<span class="at">data</span>() <span class="op">&amp;&amp;</span> <span class="va">element</span>.<span class="at">data</span>().<span class="at">hasOwnProperty</span>(scopeProperty)) <span class="op">{</span>
+                <span class="va">angular</span>.<span class="at">forEach</span>(<span class="va">element</span>.<span class="at">data</span>()[scopeProperty].<span class="at">$$watchers</span><span class="op">,</span> <span class="kw">function</span> (watcher) <span class="op">{</span>
+                    <span class="va">watchers</span>.<span class="at">push</span>(watcher)<span class="op">;</span>
+                <span class="op">}</span>)<span class="op">;</span>
+            <span class="op">}</span>
+        <span class="op">}</span>)<span class="op">;</span>
+
+        <span class="va">angular</span>.<span class="at">forEach</span>(<span class="va">element</span>.<span class="at">children</span>()<span class="op">,</span> <span class="kw">function</span> (childElement) <span class="op">{</span>
+            <span class="at">f</span>(<span class="va">angular</span>.<span class="at">element</span>(childElement))<span class="op">;</span>
+        <span class="op">}</span>)<span class="op">;</span>
+    <span class="op">};</span>
+
+    <span class="at">f</span>(root)<span class="op">;</span>
+
+    <span class="co">// Remove duplicate watchers</span>
+    <span class="kw">var</span> watchersWithoutDuplicates <span class="op">=</span> []<span class="op">;</span>
+    <span class="va">angular</span>.<span class="at">forEach</span>(watchers<span class="op">,</span> <span class="kw">function</span>(item) <span class="op">{</span>
+        <span class="cf">if</span>(<span class="va">watchersWithoutDuplicates</span>.<span class="at">indexOf</span>(item) <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">{</span>
+             <span class="va">watchersWithoutDuplicates</span>.<span class="at">push</span>(item)<span class="op">;</span>
+        <span class="op">}</span>
+    <span class="op">}</span>)<span class="op">;</span>
+
+    <span class="va">console</span>.<span class="at">log</span>(<span class="va">watchersWithoutDuplicates</span>.<span class="at">length</span>)<span class="op">;</span>
+<span class="op">}</span>)()<span class="op">;</span></code></pre></div>
+
+    </div>
+  </article>
+</body>
+</html>
